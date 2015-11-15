@@ -1,6 +1,16 @@
 (function() {
     "use strict";
 
+    /*
+     * Disclaimer: The code is based on a paper by Harold Thimbelby 2003.
+     *
+     * Solves the directed chinese postman problem.
+     * Uses a pseudopolynomial algorithm called cycle-canceling.
+     *
+     * Sometime in the future, I will replace cycle canceling with hungarian algorithm
+     * to make it useful.
+     */
+
     //  N,              number of vertices
     //  delta,          deltas of vertices
     //  neg, pos,       unbalanced vertices
@@ -61,7 +71,7 @@
 
     CPP.prototype.solve = function() {
         var self = this;
-        self.leastCostPaths();
+        self.floydWarshall();
         self.checkValid();
         self.findUnbalanced();
         self.findFeasible();
@@ -85,7 +95,7 @@
         return self;
     };
 
-    CPP.prototype.leastCostPaths = function() {
+    CPP.prototype.floydWarshall = function() {
         var self = this;
         for (var k = 0; k < self.N; k++)
             for (var i = 0; i < self.N; i++)
@@ -180,7 +190,7 @@
                 if (self.f[i][j] !== 0) residual.addArc(null, j, i, -self.c[i][j]);
             }
         }
-        residual.leastCostPaths();
+        residual.floydWarshall();
 
         for (var x = 0; x < self.N; x++)
             if (residual.c[x][x] < 0) { // cancel the cycle (if any)
@@ -201,7 +211,7 @@
                     if (residual.c[m][n] < 0) self.f[n][m] -= k;
                     else self.f[m][n] += k;
                 } while ((m = n) != x);
-                return true; // have another go
+                return true; // check again for -ve cycle
             }
         return false; // no improvements found
 
