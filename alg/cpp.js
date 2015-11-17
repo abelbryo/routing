@@ -106,12 +106,12 @@
                             self.path[i][j] = self.path[i][k];
                             self.c[i][j] = self.c[i][k] + self.c[k][j];
                             self.defined[i][j] = true;
-                            // if (i == j && self.c[i][j] < 0) return; // stop on negative cycle
+                            if (i == j && self.c[i][j] < 0) return; // exit on negative cycle
                         }
 
-        for(var m = 0; m < self.N; m++){
-            if (self.c[m][m] < 0) return; // stop on negative cycle
-        }
+     // for(var m = 0; m < self.N; m++){
+     //     if (self.c[m][m] < 0) return; // stop on negative cycle
+     // }
 
     };
 
