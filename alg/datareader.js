@@ -5,13 +5,21 @@
         fs       = require('fs'),
         readline = require('readline');
 
-    if (process.argv.length < 3) {
-        console.log("Usage: node " + process.argv[1] + " mydata.txt");
+    var showUsage = function(){
+        console.log("Usage: node " + process.argv[1] + " mydata.txt --start-vertex 1");
         process.exit(1);
+    };
+    if (process.argv.length < 5) {
+        showUsage();
+    }
+
+    if(process.argv[3] !== '--start-vertex' && process.argv[3] !== '-s'){
+        showUsage();
     }
 
     var data = {
-        filename: process.argv[2]
+        filename: process.argv[2],
+        startVertex: process.argv[4]
     };
 
     var rd = readline.createInterface({
@@ -37,7 +45,7 @@
     rd.on('close', function(e) {
         console.log("-- [ DEBUG ] -- Reading from file completed.");
         if (adapter) {
-            adapter.getRouteStartingAt("1");
+            adapter.getRouteStartingAt(data.startVertex);
         }
     });
 
