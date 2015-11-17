@@ -1,3 +1,9 @@
+function tudprinter(tudarray){
+    tudarray.forEach(function(a){
+        console.log(a.join(", "));
+    });
+}
+
 (function() {
     "use strict";
 
@@ -172,7 +178,7 @@
             var i = self.neg[u];
             for (var v = 0; v < self.pos.length; v++) {
                 var j = self.pos[v];
-                self.f[i][j] = -delta[i] < delta[j] ? delta[i] : delta[j];
+                self.f[i][j] = -delta[i] < delta[j] ? -delta[i] : delta[j];
                 delta[i] += self.f[i][j];
                 delta[j] -= self.f[i][j];
             }
@@ -204,13 +210,13 @@
                         k = self.f[n][m];
                         kunset = false;
                     }
-                } while ((m = n) != x);
+                } while ((m = n) !== x);
                 m = x;
                 do { // cancel k along the cycle
                     n = residual.path[m][x];
                     if (residual.c[m][n] < 0) self.f[n][m] -= k;
                     else self.f[m][n] += k;
-                } while ((m = n) != x);
+                } while ((m = n) !== x);
                 return true; // check again for -ve cycle
             }
         return false; // no improvements found
@@ -228,6 +234,7 @@
     CPP.prototype.traceRoute = function(startVertex) {
         var self = this;
         var result = [];
+        self.debugCostandF();
         var v = startVertex;
         var arcs = new2DArray(self.N, self.N);
         var f = new2DArray(self.N, self.N);
@@ -244,7 +251,6 @@
                 f[u][v]--; // remove path
                 for (var p; u != v; u = p) { // breakdown path into its arcs
                     p = self.path[u][v];
-                    // console.log("Take arc " + self.cheapestLabel[u][p] + " from " + u + " to " + p);
                     result.push({label: self.cheapestLabel[u][p], source: u, target: p});
                 }
             } else {
@@ -260,11 +266,23 @@
                 arcs[u][v]--;
 
                 var labelIdx = arcs[u][v];
-                // console.log("Take arc " + self.label[u][v][labelIdx] + " from " + u + " to " + v);
                 result.push({label: self.label[u][v][labelIdx], source: u, target: v});
             }
         }
         return result;
+    };
+
+    CPP.prototype.debugCostandF =function(first_argument) {
+        var self = this;
+        console.log(" --- c and f debug message --- ");
+        for( var i = 0; i < self.N; i++ ){
+            console.log( "f["+i+"]= ", self.f[i].join(", "));
+        }
+
+        for( var j = 0; j < self.N; j++ ){
+            console.log( "arcs["+j+"]= ", self.arcs[j].join(', '));
+        }
+        console.log();
     };
 
 
@@ -349,6 +367,24 @@
 ///    .addEdge("m", 8, 9, 2);
 
 /// adapter.getRouteStartingAt(1);
+
+
+////    var g = new CPP(5);
+////    g.
+////        addArc("ba", 0, 1, 1)
+////       .addArc("ac", 1, 2, 1)
+////       .addArc("ad", 1, 3, 1)
+////       .addArc("ae", 1, 4, 1)
+////       .addArc("de", 3, 4, 1)
+////       .addArc("eb", 4, 0, 1)
+////       .addArc("bc", 0, 2, 1)
+////       .addArc("cd", 2, 3, 1);
+
+////    g.solve();
+////    g.traceRoute(1);
+////    console.log("Cost = "+g.cost());
+
+
 
     module.exports = {
         Adapter: Adapter

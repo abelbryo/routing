@@ -1,0 +1,28 @@
+#
+#  * indicate arrows
+#   -------- c *-------
+#  |         *         |
+#  |         |         |
+#  *         |         |
+#  d *------ a *------ b
+#  |         |         *
+#  |         |         |
+#  |         *         |
+#   -------* e --------
+#
+#  weight = 1 for all edges
+
+ae ba b > a 1
+ae ac a > c 1
+ae ad a > d 1
+ae ae a > e 1
+ae de d > e 1
+ae eb e > b 1
+ae bc b > c 1
+ae cd c > d 1
+
+
+
+
+
+
