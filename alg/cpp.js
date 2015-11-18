@@ -228,7 +228,6 @@
     CPP.prototype.traceRoute = function(startVertex) {
         var self = this;
         var result = [];
-        self.debugCostandF();
         var v = startVertex;
         var arcs = new2DArray(self.N, self.N);
         var f = new2DArray(self.N, self.N);
