@@ -29,6 +29,7 @@
     });
 
     var adapter = new alg.Adapter();
+    var edgeCounter = 0;
 
     rd.on('line', function(line) {
         if (line.trim().search('#') < 0 && line.trim() !== '') {
@@ -39,13 +40,21 @@
                 weight = parseInt(arr[5], 10) || 1; // if weight is not given, assign 1
             adapter.addEdge(label, source, target, weight);
             console.log("Added edge %s weight %s", label, weight);
+            edgeCounter++;
         }
     });
 
     rd.on('close', function(e) {
         console.log("-- [ DEBUG ] -- Reading from file completed.");
         if (adapter) {
-            adapter.getRouteStartingAt(data.startVertex);
+            var now = new Date().getTime();
+            var walks = adapter.getRouteStartingAt(data.startVertex);
+            var later = new Date().getTime();
+            var elapsedTime = ( later - now ) / 1000;
+            console.log("No of vertices %s", adapter.nodes.length);
+            console.log("No of edges %s", edgeCounter);
+            console.log("No of walks %s", walks.length);
+            console.log("Elapsed time %s seconds.", elapsedTime);
         }
     });
 
