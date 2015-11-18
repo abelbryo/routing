@@ -1,9 +1,3 @@
-function tudprinter(tudarray){
-    tudarray.forEach(function(a){
-        console.log(a.join(", "));
-    });
-}
-
 (function() {
     "use strict";
 
